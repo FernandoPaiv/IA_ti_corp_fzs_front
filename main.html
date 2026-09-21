@@ -1,1 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EQ-Loan — Préstamo de equipos IT</title>
+  <meta name="description" content="Sistema interno para el préstamo y control de equipos de TI entre áreas.">
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --ink: #1b2433;
+      --muted: #5b6675;
+      --primary: #2563eb;
+      --primary-dark: #1e4fd0;
+      --border: #e2e5eb;
+      --ring: #c7d2fe;
+      --radius: 0.6rem;
+      --shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 6px 18px rgba(16, 24, 40, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+    }
+
+    header.site {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.6rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .brand-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .hero {
+      margin-top: 2.5rem;
+      max-width: 640px;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.6rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+      max-width: 52ch;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.15rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 1px 2px rgba(25, 60, 160, 0.18);
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-ghost {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--ring); background: #f0f2f8; }
+
+    .cards {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.15rem;
+      box-shadow: var(--shadow);
+    }
+    .card h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .card p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+
+    .status-ribbon {
+      margin-top: 2.75rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .status-ribbon code {
+      background: #eef1f6;
+      padding: 0.1em 0.4em;
+      border-radius: 0.35em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--muted);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="site">
+      <span class="brand">EQ</span>
+      <div>
+        <div class="brand-name">EQ-Loan</div>
+        <div class="brand-sub">Préstamo de equipos IT</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>Controla los equipos que se prestan entre áreas.</h1>
+      <p>
+        Sistema interno multi-tenant para acreditar el inventario de equipos de TI,
+        registrar quién los tiene y quién los pede usar en cada área.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#">Ver inventario</a>
+        <a class="btn btn-ghost" href="#">Pedir un equipo</a>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Inventario</h3>
+        <p>Catálogo de activos por área, con estado y ubicación.</p>
+      </div>
+      <div class="card">
+        <h3>Préstamos</h3>
+        <p>Asigna un equipo a una persona y devuélvelo cuando corresponde.</p>
+      </div>
+      <div class="card">
+        <h3>Aislamiento por tenant</h3>
+        <p>Cada área solo ve su propio inventario y sus propios movimientos.</p>
+      </div>
+    </section>
+
+    <p class="status-ribbon">
+      Primer entrega — página de inicio sin autenticación. Próximo hito: <code>login</code> vía Supabase Auth.
+    </p>
+  </div>
+</body>
+</html>
  
