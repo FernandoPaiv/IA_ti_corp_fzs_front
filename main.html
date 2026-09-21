@@ -1,193 +1,189 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EQ-Loan — Préstamo de equipos IT</title>
-  <meta name="description" content="Sistema interno para el préstamo y control de equipos de TI entre áreas.">
+  <title>EMPREST · empréstimo de equipamentos de TI</title>
+  <meta name="description" content="Sistema interno para o empréstimo e o controle de equipamentos de TI entre áreas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f6f7f9;
-      --surface: #ffffff;
-      --ink: #1b2433;
-      --muted: #5b6675;
-      --primary: #2563eb;
-      --primary-dark: #1e4fd0;
-      --border: #e2e5eb;
-      --ring: #c7d2fe;
-      --radius: 0.6rem;
-      --shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 6px 18px rgba(16, 24, 40, 0.06);
+      --color-bg: #161826;
+      --color-surface: #232532;
+      --color-text: #e9e9ed;
+      --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+      --color-accent: #2fb8ac;
+      --color-accent-100: #e6faf7;
+      --color-accent-200: #c2f1eb;
+      --color-accent-300: #93e3da;
+      --color-accent-700: #1d746d;
+      --color-accent-900: #0f3733;
+      --accent-10: rgba(47, 184, 172, 0.10);
+      --accent-12: rgba(47, 184, 172, 0.12);
+      --accent-22: rgba(47, 184, 172, 0.22);
+      --color-neutral-900: #292b31;
+      --font-heading: "Raleway", ui-sans-serif, system-ui, sans-serif;
+      --font-body: "Raleway", ui-sans-serif, system-ui, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 14px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background: var(--bg);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      font-family: var(--font-body);
+      font-weight: 400;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.55;
+      min-height: 820px;
+    }
+
+    h1, h2, h3, .kicker {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.12;
+      text-wrap: pretty;
     }
 
     .container {
-      max-width: 1024px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 2rem 1.25rem;
+      padding: 36px 40px 64px;
     }
 
-    header.site {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-mark {
+      width: 24px; height: 24px;
+      border: 1.5px solid var(--color-accent);
+      border-radius: 7px;
+      background: transparent;
+      display: grid; place-items: center;
     }
-
-    .brand {
-      width: 2.25rem;
-      height: 2.25rem;
-      border-radius: 0.6rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      font-weight: 700;
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
+    .brand-mark > i {
+      width: 9px; height: 9px;
+      border-radius: 2px;
+      background: var(--color-accent);
     }
-
     .brand-name {
+      font-family: var(--font-heading);
       font-weight: 700;
-      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+      font-size: 15px;
     }
-    .brand-sub {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+    .brand-name .ai { color: var(--color-accent); }
 
-    .hero {
-      margin-top: 2.5rem;
-      max-width: 640px;
-    }
-    .hero h1 {
-      font-size: clamp(1.75rem, 4vw, 2.6rem);
-      letter-spacing: -0.02em;
-      margin: 0 0 0.75rem;
-    }
-    .hero p {
-      font-size: 1.05rem;
-      color: var(--muted);
+    .hero { margin-top: 2.75rem; max-width: 720px; }
+    .hero h1 { font-size: 30px; margin: 0 0 0.75rem; }
+    .hero .lead {
+      font-size: 15px;
+      color: color-mix(in srgb, var(--color-text) 72%, transparent);
       margin: 0 0 1.5rem;
       max-width: 52ch;
     }
 
-    .actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
     .btn {
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.15rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      height: 36px; padding: 0 14px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 500;
+      text-decoration: none; cursor: pointer;
+      transition: background-color 0.15s ease;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 1px 2px rgba(25, 60, 160, 0.18);
-    }
-    .btn-primary:hover { background: var(--primary-dark); }
-    .btn-ghost {
-      background: var(--surface);
-      color: var(--ink);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--ring); background: #f0f2f8; }
+    .btn-primary { background: transparent; border: 1px solid var(--color-accent); color: var(--color-accent); }
+    .btn-primary:hover { background: var(--accent-12); }
+    .btn-primary:active { background: var(--accent-22); }
+    .btn-secondary { background: transparent; border: 1px solid var(--color-divider); color: var(--color-text); }
+    .btn-secondary:hover { background: var(--accent-10); }
 
     .cards {
       margin-top: 2.5rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+      gap: 16px;
     }
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.15rem;
-      box-shadow: var(--shadow);
+      background: var(--color-surface);
+      border: 1px solid var(--color-divider);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex; flex-direction: column; gap: 12px;
     }
-    .card h3 {
-      margin: 0 0 0.4rem;
-      font-size: 1rem;
-      letter-spacing: -0.01em;
+    .card .kicker {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--color-text) 45%, transparent);
     }
-    .card p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+    .card h3 { font-size: 16.5px; margin: 0; }
+    .card p {
+      font-size: 13.5px;
+      color: color-mix(in srgb, var(--color-text) 72%, transparent);
+      margin: 0;
+    }
 
-    .status-ribbon {
-      margin-top: 2.75rem;
-      font-size: 0.82rem;
-      color: var(--muted);
+    .rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-divider) 48px, var(--color-divider) calc(100% - 48px), transparent);
+    }
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 12px;
+      color: color-mix(in srgb, var(--color-text) 40%, transparent);
       text-align: center;
-    }
-    .status-ribbon code {
-      background: #eef1f6;
-      padding: 0.1em 0.4em;
-      border-radius: 0.35em;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      color: var(--muted);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="site">
-      <span class="brand">EQ</span>
-      <div>
-        <div class="brand-name">EQ-Loan</div>
-        <div class="brand-sub">Préstamo de equipos IT</div>
-      </div>
-    </header>
+<div class="container">
+    <div class="brand">
+      <span class="brand-mark"><i></i></span>
+      <span class="brand-name">EMPREST<span class="ai">.AI</span></span>
+    </div>
 
     <section class="hero">
-      <h1>Controla los equipos que se prestan entre áreas.</h1>
-      <p>
-        Sistema interno multi-tenant para acreditar el inventario de equipos de TI,
-        registrar quién los tiene y quién los pede usar en cada área.
+      <h1>Empréstimo de equipamentos de TI entre áreas.</h1>
+      <p class="lead">
+        Sistema interno multi-tenant para o empréstimo e o controle de equipamentos
+        de informática: quem os tem, em que estado estão e quando devem voltar.
       </p>
       <div class="actions">
-        <a class="btn btn-primary" href="#">Ver inventario</a>
-        <a class="btn btn-ghost" href="#">Pedir un equipo</a>
+        <a class="btn btn-primary" href="#">Ver catálogo</a>
+        <a class="btn btn-secondary" href="#">Pedir um equipamento</a>
       </div>
     </section>
 
     <section class="cards">
-      <div class="card">
-        <h3>Inventario</h3>
-        <p>Catálogo de activos por área, con estado y ubicación.</p>
-      </div>
-      <div class="card">
-        <h3>Préstamos</h3>
-        <p>Asigna un equipo a una persona y devuélvelo cuando corresponde.</p>
-      </div>
-      <div class="card">
-        <h3>Aislamiento por tenant</h3>
-        <p>Cada área solo ve su propio inventario y sus propios movimientos.</p>
-      </div>
+      <article class="card">
+        <span class="kicker">inventário</span>
+        <h3>Catálogo de activos</h3>
+        <p>Estado real de cada equipamento por área, com patrimônio e observações.</p>
+      </article>
+      <article class="card">
+        <span class="kicker">empréstimo</span>
+        <h3>Prazo padrão de 14 dias</h3>
+        <p>Limite de 3 itens por pessoa e devoluções registradas no momento.</p>
+      </article>
+      <article class="card">
+        <span class="kicker">isolamento</span>
+        <h3>Isolamento por tenant</h3>
+        <p>Cada área vê apenas o próprio inventário e os próprios empréstitos.</p>
+      </article>
     </section>
 
-    <p class="status-ribbon">
-      Primer entrega — página de inicio sin autenticación. Próximo hito: <code>login</code> vía Supabase Auth.
+    <div class="rule"></div>
+
+    <p class="footer">
+      Primeira entrega · página de início sem autenticação. Próximo passo: <code>login</code> no Supabase Auth.
     </p>
   </div>
 </body>
 </html>
- 
