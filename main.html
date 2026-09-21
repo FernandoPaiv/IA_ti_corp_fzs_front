@@ -134,6 +134,29 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--color-divider) 48px, var(--color-divider) calc(100% - 48px), transparent);
     }
+    .status {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid var(--color-divider);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: color-mix(in srgb, var(--color-text) 72%, transparent);
+      background: var(--color-surface);
+    }
+    .status .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      background: color-mix(in srgb, var(--color-text) 40%, transparent);
+    }
+    .status[data-state="ok"] .dot { background: var(--color-accent); box-shadow: 0 0 0 3px var(--accent-12); }
+    .status[data-state="ok"] { border-color: var(--accent-22); }
+    .status[data-state="error"] .dot { background: #d9534f; box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.14); }
+    .status[data-state="error"] { border-color: rgba(217, 83, 79, 0.28); }
     .footer {
       margin-top: 2.5rem;
       font-size: 12px;
@@ -181,9 +204,40 @@
 
     <div class="rule"></div>
 
+    <!-- Conexão front -> back: chama a rota de teste do banco na API. -->
+    <section class="status" id="api-status" data-state="loading">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="status-text">Verificando conexão com a API…</span>
+    </section>
+
     <p class="footer">
       Primeira entrega · página de início sem autenticação. Próximo passo: <code>login</code> no Supabase Auth.
     </p>
   </div>
+
+  <script>
+    // URL da API (back). Em dev: http://localhost:3000
+    // Em produção, trocar pelo domínio do projeto back na Vercel.
+    const API_BASE = 'http://localhost:3000';
+
+    const box = document.getElementById('api-status');
+    const text = box.querySelector('.status-text');
+
+    fetch(`${API_BASE}/v1/health/db`)
+      .then((res) => res.json().then((body) => ({ ok: res.ok, body })))
+      .then(({ ok, body }) => {
+        if (ok && body.status === 'ok') {
+          box.dataset.state = 'ok';
+          text.textContent = `API e banco conectados · ${body.db} · ${new Date(body.time).toLocaleString('pt-BR')}`;
+        } else {
+          box.dataset.state = 'error';
+          text.textContent = `Banco indisponível: ${body.error ?? 'erro desconhecido'}`;
+        }
+      })
+      .catch((err) => {
+        box.dataset.state = 'error';
+        text.textContent = `API inacessível: ${err.message}`;
+      });
+  </script>
 </body>
 </html>
