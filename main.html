@@ -216,9 +216,15 @@
   </div>
 
   <script>
-    // URL da API (back). Em dev: http://localhost:3000
-    // Em produção, trocar pelo domínio do projeto back na Vercel.
-    const API_BASE = 'http://localhost:3000';
+    // URL da API (back).
+    // - Em dev (localhost) aponta para a API local na porta 3000.
+    // - Em produção (Vercel) aponta para o projeto back publicado.
+    // Deteccao automatica evita URL hardcoded "localhost" no deploy.
+    const isLocal =
+      location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const API_BASE = isLocal
+      ? 'http://localhost:3000'
+      : 'https://ia-ti-corp-fzsbackend.vercel.app';
 
     const box = document.getElementById('api-status');
     const text = box.querySelector('.status-text');
