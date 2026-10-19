@@ -186,10 +186,17 @@
       .footer { display: none; }
       .container { gap: 0.9rem; }
     }
+    /* Views: só uma visível por vez (SPA simples, sem scroll). */
+    .view[hidden] { display: none !important; }
+
+    /* Tela de dados: número grande nos cards de contagem. */
+    #demo-stats h3 { font-size: 34px; color: var(--color-accent); }
+    #demo-stats .card p { font-size: 13px; }
+    button.btn { font: inherit; cursor: pointer; }
   </style>
 </head>
 <body>
-<div class="container">
+<div class="container view" id="view-home">
     <div class="brand">
       <span class="brand-mark"><i></i></span>
       <span class="brand-name">EMPREST<span class="ai">.AI</span></span>
@@ -202,8 +209,8 @@
         de informática: quem os tem, em que estado estão e quando devem voltar.
       </p>
       <div class="actions">
-        <a class="btn btn-primary" href="#">Ver catálogo</a>
-        <a class="btn btn-secondary" href="#">Pedir um equipamento</a>
+        <a class="btn btn-primary" href="#" data-go="data">Ver dados do banco</a>
+        <a class="btn btn-secondary" href="#" data-go="data">Pedir um equipamento</a>
       </div>
     </section>
 
@@ -236,7 +243,36 @@
     <p class="footer">
       Primeira entrega · página de início sem autenticação. Próximo passo: <code>login</code> no Supabase Auth.
     </p>
-  </div>
+    </div><!-- /view-home -->
+
+    <!-- Tela de demonstração: dados reais vindos do banco. -->
+    <div class="container view" id="view-data" hidden>
+      <div class="brand">
+        <span class="brand-mark"><i></i></span>
+        <span class="brand-name">EMPREST<span class="ai">.AI</span></span>
+      </div>
+
+      <section class="hero">
+        <span class="kicker">demonstração</span>
+        <h1>Dados do banco</h1>
+        <p class="lead">Contagens lidas em tempo real da API (<code>/v1/demo/stats</code>).</p>
+        <div class="actions">
+          <button class="btn btn-secondary" data-go="home" type="button">← Voltar</button>
+        </div>
+      </section>
+
+      <section class="cards" id="demo-stats">
+        <article class="card"><span class="kicker">áreas</span><h3>—</h3><p>Carregando…</p></article>
+        <article class="card"><span class="kicker">equipamentos</span><h3>—</h3><p>Carregando…</p></article>
+        <article class="card"><span class="kicker">empréstimos</span><h3>—</h3><p>Carregando…</p></article>
+      </section>
+
+      <div class="rule"></div>
+      <section class="status" id="data-status" data-state="loading">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="status-text">Buscando dados…</span>
+      </section>
+    </div><!-- /view-data -->
 
   <script>
     // URL da API (back).
@@ -267,6 +303,50 @@
         box.dataset.state = 'error';
         text.textContent = `API inacessível: ${err.message}`;
       });
+
+    // ---- Tela de demonstração: dados do banco ----
+    const views = { home: document.getElementById('view-home'), data: document.getElementById('view-data') };
+    function showView(name) {
+      for (const [k, el] of Object.entries(views)) el.hidden = k !== name;
+      if (name === 'data') loadDemoStats();
+      window.scrollTo(0, 0);
+    }
+    // Troca de view por qualquer elemento com data-go="<view>".
+    document.querySelectorAll('[data-go]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView(el.dataset.go);
+      });
+    });
+
+    async function loadDemoStats() {
+      const box = document.getElementById('data-status');
+      const text = box.querySelector('.status-text');
+      const grid = document.getElementById('demo-stats');
+      box.dataset.state = 'loading';
+      text.textContent = 'Buscando dados…';
+      try {
+        const res = await fetch(`${API_BASE}/v1/demo/stats`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `HTTP ${res.status}`);
+        const cards = [
+          { kicker: 'áreas (tenants)', h3: data.tenants.total, p: data.tenants.items.map((t) => t.name).join(', ') || '—' },
+          { kicker: 'equipamentos', h3: data.equipments.total, p: 'itens cadastrados' },
+          { kicker: 'empréstimos', h3: data.loans.total, p: `${data.loans.open} em aberto` },
+        ];
+        grid.innerHTML = cards
+          .map(
+            (c) =>
+              `<article class="card"><span class="kicker">${c.kicker}</span><h3>${c.h3}</h3><p>${c.p}</p></article>`
+          )
+          .join('');
+        box.dataset.state = 'ok';
+        text.textContent = `Dados lidos do banco · ${new Date().toLocaleTimeString('pt-BR')}`;
+      } catch (err) {
+        box.dataset.state = 'error';
+        text.textContent = `Falha ao buscar dados: ${err.message}`;
+      }
+    }
   </script>
 </body>
 </html>
