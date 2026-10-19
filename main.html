@@ -33,14 +33,17 @@
 
     * { box-sizing: border-box; }
 
-    body {
+    /* Página inicial sem scroll: ocupa exatamente a viewport (sem altura
+       mínima fixa, que forçava barra de rolagem em telas menores). */
+    html, body {
       margin: 0;
+      height: 100%;
+      overflow: hidden;
       font-family: var(--font-body);
       font-weight: 400;
       background: var(--color-bg);
       color: var(--color-text);
       line-height: 1.55;
-      min-height: 820px;
     }
 
     h1, h2, h3, .kicker {
@@ -53,8 +56,14 @@
 
     .container {
       max-width: 1240px;
+      height: 100%;
       margin: 0 auto;
-      padding: 36px 40px 64px;
+      padding: 36px 40px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow: hidden;
     }
 
     .brand { display: flex; align-items: center; gap: 0.75rem; }
@@ -78,7 +87,7 @@
     }
     .brand-name .ai { color: var(--color-accent); }
 
-    .hero { margin-top: 2.75rem; max-width: 720px; }
+    .hero { max-width: 720px; }
     .hero h1 { font-size: 30px; margin: 0 0 0.75rem; }
     .hero .lead {
       font-size: 15px;
@@ -105,7 +114,6 @@
     .btn-secondary:hover { background: var(--accent-10); }
 
     .cards {
-      margin-top: 2.5rem;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
       gap: 16px;
@@ -135,7 +143,6 @@
       background: linear-gradient(90deg, transparent, var(--color-divider) 48px, var(--color-divider) calc(100% - 48px), transparent);
     }
     .status {
-      margin-top: 2rem;
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -158,10 +165,26 @@
     .status[data-state="error"] .dot { background: #d9534f; box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.14); }
     .status[data-state="error"] { border-color: rgba(217, 83, 79, 0.28); }
     .footer {
-      margin-top: 2.5rem;
+      margin-top: auto;
       font-size: 12px;
       color: color-mix(in srgb, var(--color-text) 40%, transparent);
       text-align: center;
+    }
+    /* Telas baixas: comprime o conteúdo para caber sem scroll nem corte. */
+    @media (max-height: 760px) {
+      .container { padding: 24px 40px; gap: 1.1rem; }
+      .hero h1 { font-size: 26px; margin-bottom: 0.5rem; }
+      .hero .lead { font-size: 14px; margin-bottom: 1rem; }
+      .cards { gap: 12px; }
+      .card { padding: 14px; gap: 8px; }
+      .card h3 { font-size: 15.5px; }
+      .rule { margin-top: 0; }
+    }
+
+    /* Telas bem baixas: esconde o footer para garantir que caiba. */
+    @media (max-height: 640px) {
+      .footer { display: none; }
+      .container { gap: 0.9rem; }
     }
   </style>
 </head>
