@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>EMPREST.AI · empréstimos</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>EMPREST<span class="accent">.AI</span></span>
+    </a>
+    <a class="home-link" href="/">Página inicial</a>
+  </header>
+
+  <main>
+    <section id="login-panel" class="panel login-panel">
+      <p class="eyebrow">ACESSO INTERNO</p>
+      <h1>Entre para continuar</h1>
+      <p class="muted">Use sua conta institucional para consultar equipamentos e empréstimos da sua área.</p>
+      <form id="login-form">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="username" required>
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button primary" type="submit">Entrar</button>
+      </form>
+      <p id="login-message" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="app-panel" hidden>
+      <div class="welcome-row">
+        <div>
+          <p class="eyebrow">SEU ESPAÇO</p>
+          <h1>Equipamentos e empréstimos</h1>
+        </div>
+        <button id="logout-button" class="button secondary" type="button">Sair</button>
+      </div>
+      <p id="app-message" class="message" role="status" aria-live="polite"></p>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">INVENTÁRIO</p>
+            <h2>Equipamentos</h2>
+          </div>
+          <button id="reload-button" class="button secondary" type="button">Atualizar</button>
+        </div>
+        <div id="equipment-list" class="card-grid" aria-live="polite"></div>
+        <button id="more-equipment" class="button secondary more-button" type="button" hidden>Carregar mais equipamentos</button>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MINHA CONTA</p>
+            <h2>Meus empréstimos <span id="open-count" class="count"></span></h2>
+          </div>
+        </div>
+        <div id="loan-list" class="loan-list" aria-live="polite"></div>
+        <button id="more-loans" class="button secondary more-button" type="button" hidden>Carregar mais empréstimos</button>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
