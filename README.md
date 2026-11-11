@@ -38,3 +38,8 @@ Os dois projetos se enxergam por URL. Mantenha-as em sincronia:
 - **Back → Front (CORS):** o back lê `FRONTEND_ORIGIN`. Esse valor precisa ser
   **a URL do front em produção** nas Environment Variables do projeto **back** na
   Vercel (não `localhost`). Sem isso, o navegador bloqueia a chamada por CORS.
+
+O frontend atual é estático e não carrega arquivos `.env`; por isso
+[`.env.example`](./.env.example) documenta que ele não precisa de variáveis nem
+de chaves do Supabase. A chave `SUPABASE_ANON_KEY` e, principalmente,
+`SUPABASE_SERVICE_ROLE_KEY` nunca devem ser adicionadas ao frontend.
